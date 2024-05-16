@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-jdk21:
-    runs-on: [ self-hosted, linux, x64 ]
+    runs-on: ubuntu-latest
     name: Maven Feature CI Workflow
     env:
       CODEARTIFACT_AUTH_LOGIN: aws
