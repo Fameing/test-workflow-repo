@@ -31,17 +31,12 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-#      - name: Set AWS Login
-#        run: echo "CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain sportsbook --domain-owner 905418036266 --region eu-north-1 --query authorizationToken --output text`"  >> $GITHUB_ENV
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           distribution: 'corretto'
           java-version: '21'
           cache: maven
-#          server-id: sportsbook-snapshot
-#          server-username: CODEARTIFACT_AUTH_LOGIN
-#          server-password: CODEARTIFACT_AUTH_TOKEN
       - name: Get branch names
         uses: tj-actions/branch-names@v8
         id: branch-names
