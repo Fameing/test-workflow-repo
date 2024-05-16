@@ -1,0 +1,60 @@
+name: Maven Feature CI Workflow
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - 'feature/**'
+
+jobs:
+  build-jdk21:
+    runs-on: [ self-hosted, linux, x64 ]
+    name: Maven Feature CI Workflow
+    env:
+      CODEARTIFACT_AUTH_LOGIN: aws
+    permissions:
+      pages: write
+      checks: write
+      actions: write
+      contents: write
+      pull-requests: write
+    concurrency:
+      # The commit SHA or the branch name of the pull request. See: https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions
+      group: ${{ github.event_name == 'pull_request' && github.head_ref || github.sha}}
+      cancel-in-progress: true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Set AWS Login
+        run: echo "CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain sportsbook --domain-owner 905418036266 --region eu-north-1 --query authorizationToken --output text`"  >> $GITHUB_ENV
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'corretto'
+          java-version: '21'
+          cache: maven
+          server-id: sportsbook-snapshot
+          server-username: CODEARTIFACT_AUTH_LOGIN
+          server-password: CODEARTIFACT_AUTH_TOKEN
+      - name: Get branch names
+        uses: tj-actions/branch-names@v8
+        id: branch-names
+      - name: Change Project Version
+        run: |
+          export BRANCH_NAME=${{steps.branch-names.outputs.current_branch}}
+          ./mvnw versions:set -DnewVersion=${BRANCH_NAME##*/}-SNAPSHOT versions:commit
+      - name: Build with Maven
+        if: success()
+        run: ./mvnw clean deploy --no-snapshot-updates --batch-mode --no-transfer-progress
+      - name: Publish Surefire Test Report
+        if: success() || failure()
+        uses: scacap/action-surefire-report@v1
+

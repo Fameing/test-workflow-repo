@@ -1,0 +1,43 @@
+name: Maven Develop CI Workflow
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build-jdk21:
+    runs-on: [ self-hosted, linux, x64 ]
+    name: Build project
+    permissions:
+      pages: write
+      checks: write
+      actions: write
+      contents: write
+      pull-requests: write
+    concurrency:
+      # The commit SHA or the branch name of the pull request. See: https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions
+      group: ${{ github.event_name == 'pull_request' && github.head_ref || github.sha}}
+      cancel-in-progress: true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'corretto'
+          java-version: '21'
+          cache: maven
+      - name: Build with Maven
+        run: ./mvnw clean verify --no-snapshot-updates --batch-mode --no-transfer-progress
+      - name: Publish Surefire Test Report
+        if: success() || failure()
+        uses: scacap/action-surefire-report@v1
