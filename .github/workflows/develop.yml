@@ -2,7 +2,8 @@ name: Maven Develop CI Workflow
 
 on:
   push:
-    branches: [ $default-branch ]
+    branches:
+      - 'develop'
 
 jobs:
   build-develop:
