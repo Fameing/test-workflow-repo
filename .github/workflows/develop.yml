@@ -3,7 +3,7 @@ name: Maven Develop CI Workflow
 on:
   push:
     branches:
-      - develop
+      - 'develop'
 
 jobs:
   build-jdk21:

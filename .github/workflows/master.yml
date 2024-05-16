@@ -3,7 +3,7 @@ name: Maven Master Release CI Workflow
 on:
   push:
     branches:
-      - main
+      - 'main'
 
 jobs:
   build-jdk21:

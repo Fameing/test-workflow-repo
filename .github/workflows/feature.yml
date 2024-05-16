@@ -3,7 +3,7 @@ name: Maven Feature CI Workflow
 on:
   pull_request:
     branches:
-      - develop
+      - 'develop'
       - 'feature/**'
 
 jobs:
