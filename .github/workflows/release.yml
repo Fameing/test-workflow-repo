@@ -40,4 +40,4 @@ jobs:
           java-version: '21'
           cache: maven
       - name: Release Version
-        run: ./mvnw -X com.amashchenko.maven.plugin:gitflow-maven-plugin:1.21.0:release-start com.amashchenko.maven.plugin:gitflow-maven-plugin:1.21.0:release-finish -DreleaseRebase=true -DskipTestProject=true -B -DreleaseVersion=${{github.event.inputs.version}} -DgitFlowConfig.productionBranch=main
+        run: ./mvnw -X com.amashchenko.maven.plugin:gitflow-maven-plugin:1.21.0:release-start com.amashchenko.maven.plugin:gitflow-maven-plugin:1.21.0:release-finish -DreleaseRebase=true -DskipTestProject=true -B -DreleaseVersion=${{github.event.inputs.version}} -DgitFlowConfig.productionBranch=main -DskipTag=true
