@@ -9,9 +9,9 @@ on:
         type: string
 
 jobs:
-  build-jdk21:
+  prepare-release:
     runs-on: ubuntu-latest
-    name: Build project
+    name: Prepare Master Release CI Workflow
     permissions:
       checks: write
       actions: write

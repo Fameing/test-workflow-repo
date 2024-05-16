@@ -7,9 +7,9 @@ on:
       - 'feature/**'
 
 jobs:
-  build-jdk21:
+  build-feature:
     runs-on: ubuntu-latest
-    name: Maven Feature CI Workflow
+    name: Feature CI Workflow
     env:
       CODEARTIFACT_AUTH_LOGIN: aws
     permissions:

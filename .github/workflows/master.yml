@@ -6,9 +6,9 @@ on:
       - 'main'
 
 jobs:
-  build-jdk21:
+  build-master:
     runs-on: ubuntu-latest
-    name: Maven Make Release CI Workflow
+    name: Master Release CI Workflow
     env:
       CODEARTIFACT_AUTH_LOGIN: aws
     permissions:

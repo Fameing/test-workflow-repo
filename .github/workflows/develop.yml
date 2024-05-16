@@ -6,9 +6,9 @@ on:
       - 'develop'
 
 jobs:
-  build-jdk21:
+  build-develop:
     runs-on: ubuntu-latest
-    name: Build project
+    name: Develop CI Workflow
     permissions:
       checks: write
       actions: write
