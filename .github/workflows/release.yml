@@ -8,12 +8,10 @@ on:
         required: true
         type: string
 
-permissions: write-all
-
 jobs:
   prepare-release:
     runs-on: ubuntu-latest
-    name: Prepare Master Release CI Workflow
+    name: Prepare Release CI Workflow
     permissions:
       checks: write
       actions: write
@@ -26,7 +24,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-#          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           fetch-depth: 0
       - name: Setup Git User
         uses: fregante/setup-git-user@v2

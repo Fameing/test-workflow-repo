@@ -11,7 +11,7 @@ jobs:
       actions: write
       contents: write
     runs-on: ubuntu-latest
-    name: Master Release CI Workflow
+    name: Master CI Workflow
     env:
       CODEARTIFACT_AUTH_LOGIN: aws
     concurrency:
