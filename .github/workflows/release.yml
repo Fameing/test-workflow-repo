@@ -1,4 +1,4 @@
-name: Maven Prepare Release CI Workflow
+name: Maven Prepare Master Release CI Workflow
 
 on:
   workflow_dispatch:
@@ -13,11 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Build project
     permissions:
-      pages: write
       checks: write
       actions: write
       contents: write
-      pull-requests: write
     concurrency:
       # The commit SHA or the branch name of the pull request. See: https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions
       group: ${{ github.event_name == 'pull_request' && github.head_ref || github.sha}}

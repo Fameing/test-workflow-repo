@@ -13,11 +13,9 @@ jobs:
     env:
       CODEARTIFACT_AUTH_LOGIN: aws
     permissions:
-      pages: write
       checks: write
       actions: write
       contents: write
-      pull-requests: write
     concurrency:
       # The commit SHA or the branch name of the pull request. See: https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions
       group: ${{ github.event_name == 'pull_request' && github.head_ref || github.sha}}
