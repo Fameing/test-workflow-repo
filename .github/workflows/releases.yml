@@ -4,7 +4,7 @@ on:
   push:
     tags:
       - '*'
-      -
+
 jobs:
   build-master:
     permissions:
@@ -13,6 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     name: Generate release changelog and create release CI Workflow
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          fetch-depth: 0
       - name: Changelog
         uses: Bullrich/generate-release-changelog@master
         id: Changelog
