@@ -3,7 +3,7 @@ name: Generate release changelog and create release CI Workflow
 on:
   push:
     tags:
-      - '*'
+      - 'v*'
 
 jobs:
   build-master:
