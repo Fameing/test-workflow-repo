@@ -3,7 +3,7 @@ name: Generate release changelog and create release CI Workflow
 on:
   push:
     tags:
-      - 'v*'
+      - '*'
 
 jobs:
   build-master:
@@ -16,23 +16,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           fetch-depth: 0
-      - name: Generate Changelog
-        uses: Bullrich/generate-release-changelog@master
-        id: Changelog
-        env:
-          REPO: ${{ github.repository }}
       - name: Create Release
         id: create_release
-        uses: actions/create-release@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
-          body: |
-            ${{ steps.Changelog.outputs.changelog }}
+          repository: ${{ github.repository }}
+          generate_release_notes: true
           draft: false
           prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
 
