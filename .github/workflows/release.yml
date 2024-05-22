@@ -40,26 +40,5 @@ jobs:
           distribution: 'corretto'
           java-version: '21'
           cache: maven
-      - name: Start Release Version
-        run: ./mvnw -X com.amashchenko.maven.plugin:gitflow-maven-plugin:1.21.0:release-start -DreleaseRebase=true -DskipTestProject=true -B -DreleaseVersion=${{github.event.inputs.version}} -DgitFlowConfig.productionBranch=main
-
-      - name: Generate Changelog
-        uses: Bullrich/generate-release-changelog@master
-        id: Changelog
-        env:
-          REPO: ${{ github.repository }}
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: |
-            ${{ steps.Changelog.outputs.changelog }}
-          draft: false
-          prerelease: false
-
-      - name: Finish Release Version
-        run: ./mvnw -X com.amashchenko.maven.plugin:gitflow-maven-plugin:1.21.0:release-finish -DreleaseRebase=true -DskipTestProject=true -B -DreleaseVersion=${{github.event.inputs.version}} -DgitFlowConfig.productionBranch=main
+      - name: Release Version
+        run: ./mvnw -X com.amashchenko.maven.plugin:gitflow-maven-plugin:1.21.0:release-start com.amashchenko.maven.plugin:gitflow-maven-plugin:1.21.0:release-finish -DreleaseRebase=true -DskipTestProject=true -B -DreleaseVersion=${{github.event.inputs.version}} -DgitFlowConfig.productionBranch=main
