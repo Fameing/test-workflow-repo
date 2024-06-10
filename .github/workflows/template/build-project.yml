@@ -1,0 +1,26 @@
+name: Build Java Project
+
+on:
+  workflow_call:
+    inputs:
+      maven-goal:
+        required: true
+        type: string
+      build-docker:
+        required: true
+        type: boolean
+
+jobs:
+  setup_java_workflow_job:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build with Maven with docker
+        if: ${{ inputs.build-docker }}
+        run: ./mvnw ${{ inputs.maven-goal }} --no-snapshot-updates --batch-mode --no-transfer-progress
+      - name: Build with Maven with docker
+        if: ${{ ! inputs.build-docker }}
+        run: ./mvnw ${{ inputs.maven-goal }} -Pdocker --no-snapshot-updates --batch-mode --no-transfer-progress
+      - name: Publish Surefire Test Report
+        if: success() || failure()
+        uses: scacap/action-surefire-report@v1

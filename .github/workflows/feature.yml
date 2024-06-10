@@ -25,18 +25,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Cache Maven packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'corretto'
-          java-version: '21'
-          cache: maven
       - name: Get branch names
         uses: tj-actions/branch-names@v8
         id: branch-names
@@ -44,10 +32,13 @@ jobs:
         run: |
           export BRANCH_NAME=${{steps.branch-names.outputs.current_branch}}
           ./mvnw versions:set -DnewVersion=${BRANCH_NAME##*/}-SNAPSHOT versions:commit
+      - name: Set up JDK
+        uses: ./.github/workflows/template/java-setup.yml
+        with:
+          java-version: '21'
       - name: Build with Maven
-        if: success()
-        run: ./mvnw clean install --no-snapshot-updates --batch-mode --no-transfer-progress
-      - name: Publish Surefire Test Report
-        if: success() || failure()
-        uses: scacap/action-surefire-report@v1
+        uses: ./.github/workflows/template/build-project.yml
+        with:
+          maven-goal: 'clean install'
+          build-docker: true
 
