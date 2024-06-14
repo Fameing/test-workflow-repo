@@ -16,5 +16,5 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'corretto'
-          java-version: ${{ inputs.java-version }}
+          java-version: '${{ inputs.java-version }}'
           cache: maven
