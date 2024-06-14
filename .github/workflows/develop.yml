@@ -23,11 +23,11 @@ jobs:
         with:
           fetch-depth: 0
       - name: Set up JDK
-        uses: ./.github/actions/java-setup
+        uses: ./.github/actions/java-setup@develop
         with:
           java-version: '21'
       - name: Build with Maven
-        uses: ./.github/actions/build-project
+        uses: ./.github/actions/build-project@develop
         with:
           maven-goal: 'clean install'
           build-docker: true
