@@ -28,17 +28,5 @@ jobs:
           fetch-depth: 0
       - name: Setup Git User
         uses: fregante/setup-git-user@v2
-      - name: Cache Maven packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'corretto'
-          java-version: '21'
-          cache: maven
       - name: Release Version
         run: ./mvnw com.amashchenko.maven.plugin:gitflow-maven-plugin:1.21.0:release-start com.amashchenko.maven.plugin:gitflow-maven-plugin:1.21.0:release-finish -DreleaseRebase=true -DskipTestProject=true -B -DreleaseVersion=${{github.event.inputs.version}} -DgitFlowConfig.productionBranch=main
