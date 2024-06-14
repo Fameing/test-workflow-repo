@@ -1,11 +1,9 @@
 name: Setup Java
 
-on:
-  workflow_call:
-    inputs:
-      java-version:
-        required: true
-        type: string
+inputs:
+  java-version:
+    required: true
+    type: string
 
 jobs:
   setup_java_workflow_job:
