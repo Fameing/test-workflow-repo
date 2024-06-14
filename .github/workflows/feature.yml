@@ -33,11 +33,11 @@ jobs:
           export BRANCH_NAME=${{steps.branch-names.outputs.current_branch}}
           ./mvnw versions:set -DnewVersion=${BRANCH_NAME##*/}-SNAPSHOT versions:commit
       - name: Set up JDK
-        uses: ./.github/workflows/template/java-setup.yml
+        uses: ./.github/workflows/java-setup.yml
         with:
           java-version: '21'
       - name: Build with Maven
-        uses: ./.github/workflows/template/build-project.yml
+        uses: ./.github/workflows/build-project.yml
         with:
           maven-goal: 'clean install'
           build-docker: true
